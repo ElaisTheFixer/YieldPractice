@@ -50,7 +50,7 @@ const Navbar = (props) => {
   return (
     <nav className="w-full flex py-6 justify-between itmes-center navbar">
       {/* <img src={logo} alt="" className="w-[124px] h-[32px]"/> */}
-      <h1 className='text-[30-px] font-poppins text-white '>Exodus Dashboard</h1>
+      <h1 className='text-[30-px] font-poppins text-white '>Yield Dashboard</h1>
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
         {DnavLinks.map((nav, index) => (
           <li

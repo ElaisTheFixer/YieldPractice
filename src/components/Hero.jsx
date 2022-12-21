@@ -29,7 +29,7 @@ const Hero = () => (
       <h1 className='font-poppins font-semibold ss:text-[68px] text-[52px] text-white ss:leading-[75px] w-full'>
         Yield Engine.
       </h1>
-      <p className={`${styles.paragraph} max-w-[470px] mt-5`}>Exodus Yield is a yield generating platform that utilizes tiered staking and vaults to provide its users with a straight forward way to generate passive income through smart contracts.</p>
+      <p className={`${styles.paragraph} max-w-[470px] mt-5`}>XYZ Yield is a yield generating platform that utilizes tiered staking and vaults to provide its users with a straight forward way to generate passive income through smart contracts.</p>
 
       <div className='mt-[10px]'>
         <button className={`${styles.buttonPlan} px-[30px] mr-[10px] md:mr-[20px] bg-blue-gradient`}>Buy Now</button>

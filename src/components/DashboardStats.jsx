@@ -31,11 +31,11 @@ function parseDate(num) {
 
 const DashboardStats = (props) => {
 
-    const exodusCA = "";
+    const YieldCA = "";
     const factoryCA = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"; //uniswapfactory
     const WETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"; //weth on eth mainnet
     const USD = "0xdAC17F958D2ee523a2206206994597C13D831ec7"; //usdt on eth mainnet
-    const exodusABI = abi;
+    const YIELDABI = abi;
     const factABI = factoryABI;
     const pABI = pairABI;
     const secondsInDay = 86400;
@@ -55,7 +55,7 @@ const DashboardStats = (props) => {
             const provider = new ethers.providers.Web3Provider(ethereum, "any");
             const signer = provider.getSigner();
             const FACTORY = new ethers.Contract(factoryCA, factABI, signer);
-            const pair = await FACTORY.getPair(WETH, exodusCA);
+            const pair = await FACTORY.getPair(WETH, YieldCA);
             const PAIR = new ethers.Contract(pair, pABI, signer);
             const xDSReserves = await PAIR.getReserves();
             const marketPrice = xDSReserves[1].div(xDSReserves[0])
@@ -81,21 +81,21 @@ const DashboardStats = (props) => {
                 await window.ethereum.request({ method: 'eth_requestAccounts' })
                 const signer = provider.getSigner();
                 const userAddress = await signer.getAddress();
-                const EXODUS = new ethers.Contract(exodusCA, exodusABI, signer);
-                const xDSBal = await EXODUS.balanceOf(userAddress);
-                const hasPlan = await EXODUS.hasStake(userAddress);
-                const hasVest = await EXODUS.hasVest(userAddress);
+                const YIELD = new ethers.Contract(YieldCA, YIELDABI, signer);
+                const xDSBal = await YIELD.balanceOf(userAddress);
+                const hasPlan = await YIELD.hasStake(userAddress);
+                const hasVest = await YIELD.hasVest(userAddress);
                 setAddress(userAddress);
                 if(hasPlan) {
-                    const currentStakeInfo = await EXODUS.stakers(userAddress);
+                    const currentStakeInfo = await YIELD.stakers(userAddress);
                     const userAPY = currentStakeInfo.apy.toNumber();
                     const stakedAmount = parseBigNumberToFloat(currentStakeInfo.amount);
                     const stakedSince = currentStakeInfo.since.toNumber();
                     const planDuration = currentStakeInfo.duration.toNumber();
                     const stakeEnd = stakedSince + (secondsInDay * planDuration);
-                    const totalRewards = await EXODUS._calculateReward(userAddress);
+                    const totalRewards = await YIELD._calculateReward(userAddress);
 
-                    const currentVestInfo = await EXODUS.vesting(userAddress);
+                    const currentVestInfo = await YIELD.vesting(userAddress);
                     const vestedAmount = parseBigNumberToFloat(currentVestInfo.amount);
                     setLockup(planDuration);
                     setAmount(stakedAmount);
@@ -120,9 +120,9 @@ const DashboardStats = (props) => {
                 await window.ethereum.request({ method: 'eth_requestAccounts' })
                 const signer = provider.getSigner();
                 const userAddress = await signer.getAddress();
-                const EXODUS = new ethers.Contract(exodusCA, exodusABI, signer);
+                const YIELD = new ethers.Contract(YieldCA, YIELDABI, signer);
 
-                const tx = await EXODUS.vestRewards(userAddress);
+                const tx = await YIELD.vestRewards(userAddress);
                 await tx.wait();
             }
         }catch(err){
@@ -138,9 +138,9 @@ const DashboardStats = (props) => {
                 await window.ethereum.request({ method: 'eth_requestAccounts' })
                 const signer = provider.getSigner();
                 const userAddress = await signer.getAddress();
-                const EXODUS = new ethers.Contract(exodusCA, exodusABI, signer);
+                const YIELD = new ethers.Contract(YieldCA, YIELDABI, signer);
 
-                const tx = await EXODUS.withdrawRewards(userAddress);
+                const tx = await YIELD.withdrawRewards(userAddress);
                 await tx.wait();
             }
         }catch(err){
@@ -155,9 +155,9 @@ const DashboardStats = (props) => {
                 const provider = new ethers.providers.Web3Provider(ethereum, "any");
                 await window.ethereum.request({ method: 'eth_requestAccounts' })
                 const signer = provider.getSigner();
-                const EXODUS = new ethers.Contract(exodusCA, exodusABI, signer);
+                const YIELD = new ethers.Contract(YieldCA, YIELDABI, signer);
 
-                const tx = await EXODUS.unstake();
+                const tx = await YIELD.unstake();
                 await tx.wait();
             }
         }catch(err){
@@ -173,13 +173,13 @@ const DashboardStats = (props) => {
     //             await window.ethereum.request({ method: 'eth_requestAccounts' })
     //             const signer = provider.getSigner();
     //             const userAddress = await signer.getAddress();
-    //             const EXODUS = new ethers.Contract(exodusCA, exodusABI, signer);
-    //             const hasPlan = await EXODUS.hasStake(userAddress);
+    //             const YIELD = new ethers.Contract(YieldCA, YIELDABI, signer);
+    //             const hasPlan = await YIELD.hasStake(userAddress);
     //             if(hasPlan){
     //                 const options = {value: ethers.utils.parseEther('0.25')}
     //                 console.log(options);
     //                 console.log(parseBigNumberToFloat(ethers.utils.parseEther('0.25')));
-    //                 const tx = await EXODUS.upgradeStakeAPY(userAddress, options);
+    //                 const tx = await YIELD.upgradeStakeAPY(userAddress, options);
     //                 await tx.wait();
     //             }
     //         }

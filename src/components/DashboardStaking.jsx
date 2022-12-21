@@ -7,8 +7,8 @@ import stakePNG from '../assets/stake.png';
 
 const DashboardStaking = () => {
 
-    const exodusCA = "";
-    const exodusABI = abi;
+    const YieldCA = "";
+    const yieldABI = abi;
 
     const [plan, setPlan] = useState('');
     const [userBalance, setUserBalance] = useState('');
@@ -30,10 +30,10 @@ const DashboardStaking = () => {
             if(ethereum) {
                 const provider = new ethers.providers.Web3Provider(ethereum, "any");
                 const signer = provider.getSigner();
-                const EXODUS = new ethers.Contract(exodusCA, exodusABI, signer);
+                const YIELD = new ethers.Contract(YieldCA, yieldABI, signer);
                 const stakeWei = ethers.utils.parseUnits(stakeAmount.toString(), 'ether');
 
-                const tx = await EXODUS.stake(plan, stakeWei);
+                const tx = await YIELD.stake(plan, stakeWei);
                 await tx.wait();
             }
         }catch(err) {
@@ -49,10 +49,9 @@ const DashboardStaking = () => {
                 await window.ethereum.request({ method: 'eth_requestAccounts' })
                 const signer = provider.getSigner();
                 const userAddress = await signer.getAddress();
-                const EXODUS = new ethers.Contract(exodusCA, exodusABI, signer);
+                const YIELD = new ethers.Contract(YieldCA, yieldABI, signer);
 
-                const xDSBal = await EXODUS.balanceOf(userAddress);
-                console.log("xds bal")
+                const xDSBal = await YIELD.balanceOf(userAddress);
                 const displayBal = parseBigNumberToFloat(xDSBal);
                 setUserBalance(displayBal);
                 console.log(displayBal)
@@ -160,7 +159,7 @@ const DashboardStaking = () => {
                         <button className='font-poppins bg-blue-gradient py-1 px-3 rounded-[10px]' onClick={() => setStakeAmount(userBalance)}>Max</button>
                     </div>
                     <div className='pt-[20px]'>
-                        <p className='font-poppins pl-[10px] pb-[10px] text-white'>xDS Balance: {userBalance} ($0.00)</p>
+                        <p className='font-poppins pl-[10px] pb-[10px] text-white'>xyz Balance: {userBalance} ($0.00)</p>
                     </div>
                     <div className='flex flex-row w-11/12 justify-center pb-[10px]'>
                         <button className='font-poppins bg-blue-gradient py-1 px-3 rounded-[10px] w-full ml-[35px] md:w-10/12 md:ml-[50px]' onClick={() => stake()}>Stake</button>
@@ -169,7 +168,7 @@ const DashboardStaking = () => {
             </div>
             <div className={`md:w-[485px] ${styles.divStyled} pt-[10px] md:ml-[60px] ml-[10px] md:mr-[0px] mr-[10px] pl-[10px] pr-[10px] mt-[20px] md:mt-[0px] z-[100]`}>
                 <h1 className='font-poppins pl-[10px] pb-[10px] text-white border-b-2 border-slate-500/40'>Stake Amount: {stakeAmount}</h1>
-                <p className='font-poppins pl-[10px] pb-[10px] text-white mt-[10px]'>You will recieve: <span className='text-gradient'>{((stakeAmount * apy * 365) / 100000 / 365).toFixed()} xDS</span> After Staking 365 Days</p>
+                <p className='font-poppins pl-[10px] pb-[10px] text-white mt-[10px]'>You will recieve: <span className='text-gradient'>{((stakeAmount * apy * 365) / 100000 / 365).toFixed()} xyz</span> After Staking 365 Days</p>
                 <div className='md:ml-[135px] ml-[85px] md:mt-[10px]'>
                     <img src={stakePNG} alt='stake'/>
                 </div>
