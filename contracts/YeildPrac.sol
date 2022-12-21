@@ -296,7 +296,7 @@ contract YieldPrac is ERC20, Ownable, YieldStaking {
 
     //ADD STAKE EVENTS HERE
 
-    constructor() ERC20("Exodus", "xDS") {
+    constructor() ERC20("Yield", "XYZ") {
         IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(
             0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
         );
@@ -634,11 +634,11 @@ contract YieldPrac is ERC20, Ownable, YieldStaking {
     function stake(uint256 plan, uint256 amount) public{
         require(amount <= super.balanceOf(msg.sender), "Cannot stake more than you own");
         _burn(msg.sender, amount);
-        ExodusStaking._stake(msg.sender, amount, plan);
+        YieldStaking._stake(msg.sender, amount, plan);
     }
 
     function unstake() public {
-        ExodusStaking._unstake(msg.sender);
+        YieldStaking._unstake(msg.sender);
         uint256 amountToUnstake = tokensForUnstake[msg.sender];
         tokensForUnstake[msg.sender] = 0;
         _mint(msg.sender, amountToUnstake);
@@ -649,29 +649,29 @@ contract YieldPrac is ERC20, Ownable, YieldStaking {
     }
 
     function vestRewards(address _user) public {
-        ExodusStaking._claimAndVestRewards(_user);
+        YieldStaking._claimAndVestRewards(_user);
     }
 
     function withdrawRewards(address _user) public {
         require(hasVest[_user]);
-        ExodusStaking._calculateVested(_user);
-        uint256 rewardsToWithdraw = ExodusStaking.yieldToWithdraw[_user];
+        YieldStaking._calculateVested(_user);
+        uint256 rewardsToWithdraw = YieldStaking.yieldToWithdraw[_user];
 
-        ExodusStaking.yieldToWithdraw[_user] = 0;
+        YieldStaking.yieldToWithdraw[_user] = 0;
         mintStakeRewards(_user, rewardsToWithdraw);
     }
 
     function addPlans(uint256 apy, uint256 duration) public onlyOwner{
-        ExodusStaking.addPlan(apy, duration);
+        YieldStaking.addPlan(apy, duration);
     }
 
     function removePlans(uint256 index) public onlyOwner{
-        ExodusStaking.removePlan(index);
+        YieldStaking.removePlan(index);
     }
 
     function upgradeStakeAPY (address _user) public payable {
         require(msg.value == upgradeFee);
-        ExodusStaking.upgradeStake(_user);
+        YieldStaking.upgradeStake(_user);
     }
 
     function swapTokensForEth(uint256 tokenAmount) private {
