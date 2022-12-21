@@ -17,7 +17,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "./ExodusStaking.sol";
+import "./YieldStaking.sol";
 
 interface IUniswapV2Factory {
     event PairCreated(
