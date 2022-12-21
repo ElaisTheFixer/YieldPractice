@@ -120,12 +120,6 @@ contract YieldStaking {
         claimedRewards[_user] = totalEarnedAmount;
     }
 
-    function claimTreasuryStake(address _user) internal {
-        lastClaim[_user] = block.timestamp;
-        uint256 totalEarnedAmount = _calculateReward(_user);
-        require(totalEarnedAmount > claimedRewards[_user]);
-    }
-
     function _calculateVested(address _user) public {
         VestInfo memory _userVest = vesting[_user];
         require(_userVest.amount > 0, "Must have vest pending");
